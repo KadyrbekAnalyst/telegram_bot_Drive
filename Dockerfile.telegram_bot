@@ -1,0 +1,19 @@
+# Use the official Python image as the base image
+FROM python:3.9-slim
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the requirements file into the container at /app
+COPY requirements.txt .
+
+RUN apt-get update && apt-get install -y libpq-dev
+
+# Install the required packages
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the current directory contents into the container at /app
+COPY telegramm_bot.py .
+
+# Run the Python script when the container launches
+CMD ["python", "telegramm_bot.py"]
