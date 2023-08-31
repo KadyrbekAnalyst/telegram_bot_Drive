@@ -11,10 +11,10 @@ bot = telebot.TeleBot(BOT_TOKEN)
 
 # Database connection parameters
 db_params = {
-    "host": "localhost",  # Replace with your Docker container's IP or hostname
+    "host": "postgres",  # Replace with your Docker container's IP or hostname
     "port": 5432,         # The port you mapped in Docker Compose
     "dbname": "postgres",
-    "user": "postgres",
+    "user": "test_user",
     "password": "mysecretpassword"
 }
 
@@ -102,7 +102,7 @@ def callback_query_check_all_attendance(call):
     user_id = call.from_user.id
     
     # Check if the user is authorized to access this information
-    if user_id == 607527832 or user_id == 228986095 :  # Replace with the actual admin user ID
+    if user_id == 607527832 or user_id == 228986095 or user_id == 296662780:  # Replace with the actual admin user ID
         try:
             connection = psycopg2.connect(**db_params)
             with connection.cursor() as cursor:
@@ -111,7 +111,7 @@ def callback_query_check_all_attendance(call):
                 attendance_records = cursor.fetchall()
 
                 if attendance_records:
-                    attendance_text = "Attendance for today:\n"
+                    attendance_text = f"Attendance for today {current_date} :\n"
                     for record in attendance_records:
                         name = record[0]
                         attended_today = record[1]
